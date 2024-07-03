@@ -149,7 +149,7 @@ void solve()
     }
 }
 
-#define TEST
+// #define TEST
 
 int main()
 {
@@ -158,16 +158,12 @@ int main()
         exit(0);
     #endif
 
-    N = 6;
-    val.push_back(1);
-    val.push_back(1);
-    val.push_back(1);
-    val.push_back(1);
-    val.push_back(1);
-    val.push_back(1);
+    N = 4;
+
+    val = {1,3,4,6};
 
     map< pair<set<int>, set<int> > , int > visited;
-    recurse({2,4},{2,4,5},visited,2);
+    recurse({0,1},{0,1,2},visited,7);
     cout<<"printing size of finalSet : "<<finalSet.size()<<"\n";
     for(auto it : finalSet)
     {
@@ -177,6 +173,6 @@ int main()
         }
         cout<<"\n";
     }
-    cout<<totcnt<<"\n";
+    cout<<"total number of cuts : " <<totcnt<<"\n";
     return 0;
 }
