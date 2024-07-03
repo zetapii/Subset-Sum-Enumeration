@@ -1,13 +1,9 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// map< pair<set<int>, set<int> > , int > visited;
-
 set< set< int > > finalSet;
 
-int N = 6 ;
-
-long long ans;
+int N;
 
 vector<long long> val;
 
@@ -28,8 +24,8 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
     visited[{parLattice, childLattice}] = 1;
 
     totcnt++;
-    //print the current set being visited
-   /* cout<<"Printing parent lattice : ";
+    //uncomment to print the current cut being visited
+    /* cout<<"Printing parent lattice : ";
     for(auto it : parLattice)
     {
         cout<<val[it]<<" ";
@@ -44,7 +40,13 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
     cout<<"\n";
     cout<<"-----\n";*/
     if(getsum(parLattice) == target) finalSet.insert(parLattice);
-    if(getsum(childLattice) <= target) cout<<"Error\n";
+
+    if(getsum(childLattice) <= target)
+    {
+        cout<<"Error\n";
+        exit(0);
+    }
+
     //Let Y1,Y2,Y3.......Y_C be the parents of C
     for(auto itr: childLattice)
     {
@@ -72,7 +74,6 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
 
             for(int itrr=0;itrr<N; itrr++)
             {
-                // if(itrr == itr) continue;
                 if(curParLattice.find(itrr) == curParLattice.end())
                 {
                     set<int> temp = curParLattice;
@@ -85,66 +86,79 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
                         set<int> temp2 = childLattice;
                         temp2.insert(itr);
                         temp2.insert(itrr);
-                        // cout<<"got here eee\n";
-                        // for(auto i: temp2)
-                        // {
-                        //     cout<<val[i]<<" ";
-                        // }
-                        // cout<<endl;
-                        // for(auto i: temp)
-                        // {
-                        //     cout<<val[i]<<" ";
-                        // }
-                        // cout<<endl<<"----\n";
                         recurse(temp, temp2 ,visited,target);        
                     }
                 }
             }
         }
     }
+    return ;
 }
 
-
-void test()
+//Assuming the cut exits, the function finds out one of the cuts
+pair< set<int> , set<int> > getCut(vector<long long> arr, int K)
 {
-    int iteration = 1;
-    for(int i=0;i<iteration;i++)
+    int N=arr.size();
+    set<int> parentCut,childCut;
+    int sum = 0;
+    for(int i = 0; i < N; i++)
     {
-        //randomly initialise the array
-        ans = 0;
+        sum+=arr[i];
+        if(sum > K)
+        {
+            for(int j=0;j<i;j++) parentCut.insert(j),childCut.insert(j);
+            childCut.insert(i);
+            break;
+        }
+    }
+    return {parentCut,childCut};
+}
+
+void solve()
+{
+    totcnt=0;
+    val.clear();
+    map< pair<set<int>, set<int> > , int > visited;
+    //read from file tests/input.txt
+    freopen("tests/input.txt", "r", stdin);
+    freopen("program_output.txt", "w", stdout);
+    int target;
+    while(cin>>N)
+    {
         finalSet.clear();
-        val.clear();
-        N=5;
-        srand(time(nullptr));
-        for(int i=0;i<N;i++)
-            val.push_back(rand()%10 + 1);
-        int K=val[0]+val[1];
-        map< pair<set<int>, set<int> > , int > visited;
-        int idx=-1;
-        for(int i=0;i<N;i++)
-        {
-            if(val[i]>K) idx = i;
+        cin>>target;
+        val.resize(N);
+        visited.clear();
+        set<int> childCut,parentCut;
+        int sum = 0;
+        for(int i = 0; i < N; i++) 
+        {   
+            cin>>val[i];
+            sum += val[i];
         }
-        if(idx == -1) continue;
-        recurse({},{i},visited,K);
-        int ans = 0;
-        for(int i=0;i<(1<<N);i++)
+        if(sum <= target)
         {
-            int sum = 0;
-            for(int j=0;j<N;j++)
-            {
-                if(i&(1<<j)) sum+=val[j];
-            }
-            if(sum == K) ans++;
+            cout<<(sum == target)<<endl;
         }
-        assert(finalSet.size() == ans);
-        cout<<"test passed";
+        else 
+        {
+            pair<set<int>,set<int> > ret = getCut(val,target);
+            recurse(ret.first,ret.second,visited,target);
+            cout<<finalSet.size()<<endl;
+        }
     }
 }
+
+#define TEST
+
 int main()
 {
-    // test();
-    // return 0;
+    #ifdef TEST
+        solve();
+        exit(0);
+    #endif
+
+    N = 6;
     val.push_back(1);
     val.push_back(1);
     val.push_back(1);
@@ -155,14 +169,14 @@ int main()
     map< pair<set<int>, set<int> > , int > visited;
     recurse({2,4},{2,4,5},visited,2);
     cout<<"printing size of finalSet : "<<finalSet.size()<<"\n";
-    // for(auto it : finalSet)
-    // {
-    //     for(auto itr : it)
-    //     {
-    //         cout<<val[itr]<<" ";
-    //     }
-    //     cout<<"\n";
-    // }
-    // cout<<totcnt<<"\n";
+    for(auto it : finalSet)
+    {
+        for(auto itr : it)
+        {
+            cout<<val[itr]<<" ";
+        }
+        cout<<"\n";
+    }
+    cout<<totcnt<<"\n";
     return 0;
 }
