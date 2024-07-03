@@ -5,7 +5,7 @@ using namespace std;
 
 set< set< int > > finalSet;
 
-int N = 4 ;
+int N = 6 ;
 
 long long ans;
 
@@ -18,15 +18,33 @@ int getsum(set<int> s)
     return sum;
 }
 
-void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int > visited  , int target)
+int totcnt = 0;
+
+void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int >& visited  , int target)
 {
-    if(visited[{parLattice,childLattice}] == 1)
+    if(visited[{parLattice, childLattice}] == 1)
         return ;
 
-    visited[{parLattice,childLattice}] = 1;
+    visited[{parLattice, childLattice}] = 1;
 
+    totcnt++;
+    //print the current set being visited
+   /* cout<<"Printing parent lattice : ";
+    for(auto it : parLattice)
+    {
+        cout<<val[it]<<" ";
+    }
+    cout<<"\n";
+    
+    cout<<"Printing child lattice : ";
+    for(auto it : childLattice)
+    {
+        cout<<val[it]<<" ";
+    }
+    cout<<"\n";
+    cout<<"-----\n";*/
     if(getsum(parLattice) == target) finalSet.insert(parLattice);
-
+    if(getsum(childLattice) <= target) cout<<"Error\n";
     //Let Y1,Y2,Y3.......Y_C be the parents of C
     for(auto itr: childLattice)
     {
@@ -54,7 +72,7 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
 
             for(int itrr=0;itrr<N; itrr++)
             {
-                if(itrr == itr) continue;
+                // if(itrr == itr) continue;
                 if(curParLattice.find(itrr) == curParLattice.end())
                 {
                     set<int> temp = curParLattice;
@@ -67,6 +85,17 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
                         set<int> temp2 = childLattice;
                         temp2.insert(itr);
                         temp2.insert(itrr);
+                        // cout<<"got here eee\n";
+                        // for(auto i: temp2)
+                        // {
+                        //     cout<<val[i]<<" ";
+                        // }
+                        // cout<<endl;
+                        // for(auto i: temp)
+                        // {
+                        //     cout<<val[i]<<" ";
+                        // }
+                        // cout<<endl<<"----\n";
                         recurse(temp, temp2 ,visited,target);        
                     }
                 }
@@ -75,21 +104,65 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
     }
 }
 
+
+void test()
+{
+    int iteration = 1;
+    for(int i=0;i<iteration;i++)
+    {
+        //randomly initialise the array
+        ans = 0;
+        finalSet.clear();
+        val.clear();
+        N=5;
+        srand(time(nullptr));
+        for(int i=0;i<N;i++)
+            val.push_back(rand()%10 + 1);
+        int K=val[0]+val[1];
+        map< pair<set<int>, set<int> > , int > visited;
+        int idx=-1;
+        for(int i=0;i<N;i++)
+        {
+            if(val[i]>K) idx = i;
+        }
+        if(idx == -1) continue;
+        recurse({},{i},visited,K);
+        int ans = 0;
+        for(int i=0;i<(1<<N);i++)
+        {
+            int sum = 0;
+            for(int j=0;j<N;j++)
+            {
+                if(i&(1<<j)) sum+=val[j];
+            }
+            if(sum == K) ans++;
+        }
+        assert(finalSet.size() == ans);
+        cout<<"test passed";
+    }
+}
 int main()
 {
+    // test();
+    // return 0;
     val.push_back(1);
-    val.push_back(3);
-    val.push_back(4);
-    val.push_back(6);
-    recurse({3},{2,3},{},7);
+    val.push_back(1);
+    val.push_back(1);
+    val.push_back(1);
+    val.push_back(1);
+    val.push_back(1);
+
+    map< pair<set<int>, set<int> > , int > visited;
+    recurse({2,4},{2,4,5},visited,2);
     cout<<"printing size of finalSet : "<<finalSet.size()<<"\n";
-    for(auto it : finalSet)
-    {
-        for(auto itr : it)
-        {
-            cout<<val[itr]<<" ";
-        }
-        cout<<"\n";
-    }
+    // for(auto it : finalSet)
+    // {
+    //     for(auto itr : it)
+    //     {
+    //         cout<<val[itr]<<" ";
+    //     }
+    //     cout<<"\n";
+    // }
+    // cout<<totcnt<<"\n";
     return 0;
 }
