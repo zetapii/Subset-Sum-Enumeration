@@ -3,7 +3,6 @@ using namespace std;
 
 void solveTests()
 {
-    //take input from file input.txt and output to file output.txt
     freopen("input.txt", "r", stdin);
     freopen("output.txt", "w", stdout);
     int N,target;
