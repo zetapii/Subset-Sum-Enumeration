@@ -16,7 +16,7 @@ int getsum(set<int> s)
 
 int totcnt = 0;
 
-void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int >& visited  , int target)
+void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int > & visited  , int target)
 {
     if(visited[{parLattice, childLattice}] == 1)
         return ;
@@ -95,19 +95,25 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
     return ;
 }
 
-//Assuming the cut exits, the function finds out one of the cuts
+//Assuming the cut exits, the function finds out one of the cuts randomly
 pair< set<int> , set<int> > getCut(vector<long long> arr, int K)
 {
     int N=arr.size();
     set<int> parentCut,childCut;
     int sum = 0;
+    vector<int> indices(N);
+    for(int i = 0; i < N; i++) indices[i] = i;
+    std::random_device rd;
+    std::mt19937 g(rd());
+
+    shuffle(indices.begin(),indices.end(),g);
     for(int i = 0; i < N; i++)
     {
-        sum+=arr[i];
+        sum+=arr[indices[i]];
         if(sum > K)
         {
-            for(int j=0;j<i;j++) parentCut.insert(j),childCut.insert(j);
-            childCut.insert(i);
+            for(int j=0;j<i;j++) parentCut.insert(indices[j]),childCut.insert(indices[j]);
+            childCut.insert(indices[i]);
             break;
         }
     }
