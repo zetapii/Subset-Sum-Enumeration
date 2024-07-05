@@ -15,10 +15,11 @@ We aim to explore the ideas from the paper [found here](https://citeseerx.ist.ps
 The nodes correspond to the subsets of the integers in the multiset $S$. A node $v$ is a child of the node $u$ in the lattice if  $u \subset v$  and $u$ and $v$ differ by exactly one element. The node $u$ is a parent of the node $v$.
 
 ![alt text](Images/Graph%20Lattice.jpeg)
+The above lattice is for N=4, Multiset = {1,3,4,6} , Target T = 7
 
 We define infrequent lattice node as subset having sum > T . Similarly frequent lattice nodes are defined as subsets having sum <=T . If a frequent lattice node is a parent of an infrequent lattice node,we call the edge  a cut.
 By definition,Any subset having sum equal to K will be part of atleast one cut,or it will be containing all the elements of the multiset.
-A total of 12 cuts are present.Our algorithm will pick up one of the cuts randomly and explore all other cuts recursively.While exploring the cuts , we will simultaneously check if the parent lattice node is having subset sum equal to K.
+A total of 12 cuts are present in the above example.Our algorithm will pick up one of the cuts randomly and explore all other cuts recursively.While exploring the cuts , we will simultaneously check if the parent lattice node is having subset sum equal to K.
 
 ### Implementation Details
 
