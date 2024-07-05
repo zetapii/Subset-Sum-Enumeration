@@ -16,7 +16,7 @@ int getsum(set<int> s)
 
 int totcnt = 0;
 
-void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int > & visited  , int target)
+void expandCut(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int > & visited  , int target)
 {
     if(visited[{parLattice, childLattice}] == 1)
         return ;
@@ -25,14 +25,14 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
 
     totcnt++;
     //uncomment to print the current cut being visited
-    /* cout<<"Printing parent lattice : ";
+    /* cout<<"Printing parent lattice node : ";
     for(auto it : parLattice)
     {
         cout<<val[it]<<" ";
     }
     cout<<"\n";
     
-    cout<<"Printing child lattice : ";
+    cout<<"Printing child lattice node : ";
     for(auto it : childLattice)
     {
         cout<<val[it]<<" ";
@@ -63,7 +63,7 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
                 temp.erase(itrr);
                 if(getsum(temp) <= target) 
                 {
-                    recurse(temp,curParLattice,visited,target);
+                    expandCut(temp,curParLattice,visited,target);
                     break;
                 }
             }
@@ -79,14 +79,14 @@ void recurse(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, s
                     set<int> temp = curParLattice;
                     temp.insert(itrr);
                     if(getsum(temp) > target) //if CYi is infrequent
-                        recurse(curParLattice,temp,visited,target);
+                        expandCut(curParLattice,temp,visited,target);
                     else 
                     {
                         //itrr  and itr , add both and we will get the common child
                         set<int> temp2 = childLattice;
                         temp2.insert(itr);
                         temp2.insert(itrr);
-                        recurse(temp, temp2 ,visited,target);        
+                        expandCut(temp, temp2 ,visited,target);        
                     }
                 }
             }
@@ -149,13 +149,13 @@ void solve()
         else 
         {
             pair<set<int>,set<int> > ret = getCut(val,target);
-            recurse(ret.first,ret.second,visited,target);
+            expandCut(ret.first,ret.second,visited,target);
             cout<<finalSet.size()<<endl;
         }
     }
 }
 
-// #define TEST
+#define TEST
 
 int main()
 {
@@ -169,7 +169,7 @@ int main()
     val = {1,3,4,6};
 
     map< pair<set<int>, set<int> > , int > visited;
-    recurse({0,1},{0,1,2},visited,7);
+    expandCut({0,1},{0,1,2},visited,7);
     cout<<"printing size of finalSet : "<<finalSet.size()<<"\n";
     for(auto it : finalSet)
     {
