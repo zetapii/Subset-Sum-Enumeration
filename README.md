@@ -1,6 +1,7 @@
 ### Problem Statement
 
-The Subset Sum Problem (SSP) is a classic decision problem in computer science. Given a multiset $ S$ of integers and a target sum $T$, the problem asks whether any subset of the integers sums precisely to $T$. Our objective is to identify and list all subsets whose sum equals $T$.
+The Subset Sum Problem (SSP) is a classic decision problem in computer science. Given a multiset $S$ of integers and a target sum $T$, the problem asks whether any subset of the integers sums precisely to $T$. 
+Our objective is to identify and list all subsets whose sum equals $T$.
 
 ### Task
 
