@@ -9,4 +9,4 @@ We aim to explore the ideas from the paper [found here](https://citeseerx.ist.ps
 
 ### Lattice Structure
 
-Thenodes correspond to the subsets of the integers in the multiset $S$. A node $v$ is a child of the node $u$ in the lattice if \( $ u \subset v \ $) and $u$ and $v$ differ by exactly one element. The node $u$ is a parent of the node $v$.
+Thenodes correspond to the subsets of the integers in the multiset $S$. A node $v$ is a child of the node $u$ in the lattice if  $u \subset v$  and $u$ and $v$ differ by exactly one element. The node $u$ is a parent of the node $v$.
