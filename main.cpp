@@ -16,84 +16,65 @@ int getsum(set<int> s)
 
 int totcnt = 0;
 
-void expandCut(set<int> parLattice, set<int> childLattice ,  map< pair<set<int>, set<int> > , int > & visited  , int target)
-{
-    if(visited[{parLattice, childLattice}] == 1)
-        return ;
-
-    visited[{parLattice, childLattice}] = 1;
-
-    totcnt++;
-    //uncomment to print the current cut being visited
-    /* cout<<"Printing parent lattice node : ";
-    for(auto it : parLattice)
-    {
-        cout<<val[it]<<" ";
-    }
-    cout<<"\n";
+void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , int> & visited, int target) {
+    queue<pair<set<int>, set<int>>> q;
+    q.push({parLattice, childLattice});
     
-    cout<<"Printing child lattice node : ";
-    for(auto it : childLattice)
-    {
-        cout<<val[it]<<" ";
-    }
-    cout<<"\n";
-    cout<<"-----\n";*/
-    if(getsum(parLattice) == target) finalSet.insert(parLattice);
+    while (!q.empty()) {
+        auto current = q.front();
+        q.pop();
+        
+        set<int> curParLattice = current.first;
+        set<int> curChildLattice = current.second;
+        
+        if(visited[curChildLattice]==1) continue;
 
-    if(getsum(childLattice) <= target)
-    {
-        cout<<"Error\n";
-        exit(0);
-    }
-
-    //Let Y1,Y2,Y3.......Y_C be the parents of C
-    for(auto itr: childLattice)
-    {
-        set<int> curParLattice = childLattice;
-        curParLattice.erase(itr);
-
-        //now Y_i = curParLattice
-        if(getsum(curParLattice) > target) //if Y_i is infrequent
-        {
-            //If one frequent parent PY_i of Y_i exists
-            for(auto itrr: curParLattice)
-            {
-                set<int> temp = curParLattice;
-                temp.erase(itrr);
-                if(getsum(temp) <= target) 
-                {
-                    expandCut(temp,curParLattice,visited,target);
-                    break;
-                }
-            }
+        visited[curChildLattice]=1;
+        
+        totcnt++;
+        
+        if (getsum(curParLattice) == target) finalSet.insert(curParLattice);
+        
+        if (getsum(curChildLattice) <= target) {
+            cout<< "Error\n";
+            exit(0);
         }
-        else  //If Y_i is frequent
-        {
-            if(getsum(curParLattice) == target) finalSet.insert(curParLattice);
-
-            for(int itrr=0;itrr<N; itrr++)
-            {
-                if(curParLattice.find(itrr) == curParLattice.end())
-                {
-                    set<int> temp = curParLattice;
-                    temp.insert(itrr);
-                    if(getsum(temp) > target) //if CYi is infrequent
-                        expandCut(curParLattice,temp,visited,target);
-                    else 
-                    {
-                        //itrr  and itr , add both and we will get the common child
-                        set<int> temp2 = childLattice;
-                        temp2.insert(itr);
-                        temp2.insert(itrr);
-                        expandCut(temp, temp2 ,visited,target);        
+        
+        for (auto itr : curChildLattice) {
+            set<int> nextParLattice = curChildLattice;
+            nextParLattice.erase(itr);
+            
+            if (getsum(nextParLattice) > target) {
+                for (auto itrr : nextParLattice) {
+                    set<int> temp = nextParLattice;
+                    temp.erase(itrr);
+                    if (getsum(temp) <= target) {
+                        q.push({temp, nextParLattice});
+                        break;
+                    }
+                }
+            } else {
+                if (getsum(nextParLattice) == target) finalSet.insert(nextParLattice);
+                
+                for (int itrr = 0; itrr < N; itrr++) {
+                    if (nextParLattice.find(itrr) == nextParLattice.end()) {
+                        set<int> temp = nextParLattice;
+                        temp.insert(itrr);
+                        if (getsum(temp) > target) {
+                            q.push({nextParLattice, temp});
+                        } else {
+                            set<int> temp2 = curChildLattice;
+                            temp2.insert(itr);
+                            temp2.insert(itrr);
+                            q.push({temp, temp2});
+                        }
                     }
                 }
             }
         }
     }
-    return ;
 }
+
 
 //Assuming the cut exits, the function finds out one of the cuts randomly
 pair< set<int> , set<int> > getCut(vector<long long> arr, int K)
@@ -120,13 +101,14 @@ pair< set<int> , set<int> > getCut(vector<long long> arr, int K)
     return {parentCut,childCut};
 }
 
-void solve()
+void solve(const char* filename = "tests/input.txt")
 {
     totcnt=0;
     val.clear();
-    map< pair<set<int>, set<int> > , int > visited;
+    map< set<int> , int > visited;
+    
     //read from file tests/input.txt
-    freopen("tests/input.txt", "r", stdin);
+    freopen(filename, "r", stdin);
     freopen("program_output.txt", "w", stdout);
     int target;
     while(cin>>N)
@@ -149,13 +131,16 @@ void solve()
         else 
         {
             pair<set<int>,set<int> > ret = getCut(val,target);
-            expandCut(ret.first,ret.second,visited,target);
+            // expandCut(ret.first,ret.second,visited,target);
+            bfsExpandCut(ret.first, ret.second, visited, target);
             cout<<finalSet.size()<<endl;
         }
     }
 }
 
 #define TEST
+
+// #define BENCHMARK
 
 int main()
 {
@@ -164,12 +149,24 @@ int main()
         exit(0);
     #endif
 
+    #ifdef BENCHMARK
+        //measure time
+        clock_t start, end;
+        start = clock();
+        const char* filename = "test_case.txt";
+        solve(filename);
+        end = clock();
+        double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
+        cout << "Time taken by program is : " << fixed << time_taken << setprecision(5);
+    #endif
+
     N = 4;
 
     val = {1,3,4,6};
 
-    map< pair<set<int>, set<int> > , int > visited;
-    expandCut({0,1},{0,1,2},visited,7);
+    map< set<int> , int > visited;
+    // expandCut({0,1},{0,1,2},visited,7);
+    bfsExpandCut({0,1},{0,1,2},visited,7);
     cout<<"printing size of finalSet : "<<finalSet.size()<<"\n";
     for(auto it : finalSet)
     {
