@@ -32,4 +32,14 @@ Algorithm :
 
 The algorithm remains very similar to what has been described in the paper.
 1. Find an initial cut by randomly adding elements until the sum of the elements is $>T$
-2. Recursively Invoke ExpandCut Algorithm to find other cuts. While exploring cuts also check if the size of the parent lattice node is equal to $T$. 
+2. Recursively Invoke ExpandCut Algorithm to find other cuts. While exploring cuts also check if the size of the parent lattice node is equal to $T$.
+
+### Optimizations
+
+- **Use BFS instead of DFS**: Iterative traversal with BFS requires less memory compared to DFS.
+- **Avoid redundant invocations**: For a cut (P, C), where P is the parent lattice node and C is the lattice node, once `ExpandCut` is invoked on (P, C), we can skip invoking the algorithm on cuts (P', C). It can be proven that the algorithm still visits all the cuts.
+
+
+
+
+
