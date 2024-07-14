@@ -14,7 +14,7 @@ We aim to explore the ideas from the paper [found here](https://citeseerx.ist.ps
 
 The nodes correspond to the subsets of the integers in the multiset $S$. A node $v$ is a child of the node $u$ in the lattice if  $u \subset v$  and $u$ and $v$ differ by exactly one element. The node $u$ is a parent of the node $v$.
 
-![alt text](Images/Graph%20Lattice.jpeg)
+![alt text](images/Graph%20Lattice.jpeg)
 The above lattice is for N=4, Multiset = {1,3,4,6} , Target T = 7
 
 We define infrequent lattice node as subset having sum > T . Similarly frequent lattice nodes are defined as subsets having sum <=T . If a frequent lattice node is a parent of an infrequent lattice node,we call the edge  a cut.
