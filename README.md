@@ -34,10 +34,23 @@ The algorithm remains very similar to what has been described in the paper.
 1. Find an initial cut by randomly adding elements until the sum of the elements is $>T$
 2. Recursively Invoke ExpandCut Algorithm to find other cuts. While exploring cuts also check if the size of the parent lattice node is equal to $T$.
 
+### Tests
+To ensure accuracy , we have generated more than 100 tests. All the tests can be run by invoking `python3 tests/script.py` from the $root$ directory.
+The test inputs are provided in the `tests/input.txt` file, with their corresponding outputs in the `tests/output.txt` file.
+
+##### Input Format
+- `N`: Number of elements in the array.
+- `K`: Target sum.
+- $A_1$, $A_2$, ..., $A_N$: The elements of the array.
+
+##### Output Format
+- `M`: Number of subsets having a sum equal to `K`.
+
+
 ### Optimizations
 
-- **Use BFS instead of DFS**: Iterative traversal with BFS requires less memory compared to DFS.
-- **Avoid redundant invocations**: For a cut (P, C), where P is the parent lattice node and C is the lattice node, once `ExpandCut` is invoked on (P, C), we can skip invoking the algorithm on cuts (P', C). It can be proven that the algorithm still visits all the cuts.
+1. **Use BFS instead of DFS**: Iterative traversal with BFS requires less memory compared to DFS.
+2. **Avoid redundant invocations**: For a cut (P, C), where P is the parent lattice node and C is the lattice node, once `ExpandCut` is invoked on (P, C), we can skip invoking the algorithm on cuts (P', C). It can be proven that the algorithm still visits all the cuts.
 
 
 
