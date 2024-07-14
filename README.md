@@ -23,12 +23,12 @@ A total of 12 cuts are present in the above example.Our algorithm will pick up o
 
 ### Implementation Details
 
-Data Structures : 
+#### Data Structures 
 
 1. `std::unordered_map` to store the $visited$ table. We should be using a custom hash function instead of relying on the default `std::hash` used by `std::unordered_map` .
 2. `std::set` to store child lattice node and parent lattice node for a cut. Instead of storing both the sets, we can store the set for child lattice node only along with the element to be removed to derive the parent lattice node. 
 
-Algorithm : 
+#### Algorithm
 
 The algorithm remains very similar to what has been described in the paper.
 1. Find an initial cut by randomly adding elements until the sum of the elements is $>T$
