@@ -53,7 +53,7 @@
 | Input 8  | 295.874016 seconds | 582279 | 6001 | 43225334 | 228176 |
 
 Tests are generated such that:
-- Input 1, Input 2 and Input 3 each have subsets of size ~25 which equals to K.
+- Input 1, Input 2 and Input 3 each have subsets of size ~20 which equals to K.
 - Input 5, Input 6 and Input 7 each have subsets of size ~5 which equals to K.
 
 Observations : 
