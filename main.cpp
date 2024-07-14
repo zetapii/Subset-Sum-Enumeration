@@ -1,5 +1,15 @@
 #include <bits/stdc++.h>
+#include <stdexcept>
 using namespace std;
+
+class ImplementationError: public exception 
+{ 
+  virtual const char* what() const throw() 
+  { 
+    return "Identified cut not satisfying definition"; 
+  } 
+}; 
+
 
 set< set< int > > finalSet;
 
@@ -15,11 +25,13 @@ int getsum(set<int> s)
 }
 
 int totcnt = 0;
+int mxQueueSize = 1;
+int alreadyVisited = 0;
 
 void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , int> & visited, int target) {
     queue<pair<set<int>, set<int>>> q;
     q.push({parLattice, childLattice});
-    
+    visited[childLattice] = 1;
     while (!q.empty()) {
         auto current = q.front();
         q.pop();
@@ -27,16 +39,12 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
         set<int> curParLattice = current.first;
         set<int> curChildLattice = current.second;
         
-        if(visited[curChildLattice]==1) continue;
-
-        visited[curChildLattice]=1;
-        
         totcnt++;
         
         if (getsum(curParLattice) == target) finalSet.insert(curParLattice);
         
         if (getsum(curChildLattice) <= target) {
-            cout<< "Error\n";
+            throw ImplementationError();
             exit(0);
         }
         
@@ -48,9 +56,17 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                 for (auto itrr : nextParLattice) {
                     set<int> temp = nextParLattice;
                     temp.erase(itrr);
-                    if (getsum(temp) <= target) {
-                        q.push({temp, nextParLattice});
-                        break;
+                    if (getsum(temp) <= target ) {
+                       if(visited[nextParLattice]==0)
+                       {
+                            visited[nextParLattice]=1;
+                            q.push({temp, nextParLattice});
+                            break; 
+                       }
+                       else 
+                       {
+                            alreadyVisited++;
+                       }
                     }
                 }
             } else {
@@ -60,18 +76,35 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                     if (nextParLattice.find(itrr) == nextParLattice.end()) {
                         set<int> temp = nextParLattice;
                         temp.insert(itrr);
-                        if (getsum(temp) > target) {
-                            q.push({nextParLattice, temp});
+                        if (getsum(temp) > target ) {
+                            if(visited[temp]==0)
+                            {
+                                q.push({nextParLattice, temp});
+                                visited[temp]=1;
+                            }
+                            else 
+                            {
+                                alreadyVisited++;
+                            }
                         } else {
                             set<int> temp2 = curChildLattice;
                             temp2.insert(itr);
                             temp2.insert(itrr);
-                            q.push({temp, temp2});
+                            if(visited[temp2]==0)
+                            {
+                                q.push({temp, temp2});
+                                visited[temp2]=1;
+                            }
+                            else 
+                            {
+                                alreadyVisited++;
+                            }
                         }
                     }
                 }
             }
         }
+        mxQueueSize = max(mxQueueSize , (int)q.size());
     }
 }
 
@@ -138,7 +171,7 @@ void solve(const char* filename = "tests/input.txt")
     }
 }
 
-#define TEST
+// #define TEST
 
 // #define BENCHMARK
 
@@ -150,7 +183,6 @@ int main()
     #endif
 
     #ifdef BENCHMARK
-        //measure time
         clock_t start, end;
         start = clock();
         const char* filename = "test_case.txt";
@@ -158,6 +190,11 @@ int main()
         end = clock();
         double time_taken = double(end - start) / double(CLOCKS_PER_SEC);
         cout << "Time taken by program is : " << fixed << time_taken << setprecision(5);
+        cout << "Total Number of cuts : " << totcnt << endl;
+        cout << "Maximum Size of Queue at any instant " << mxQueueSize << endl;
+        cout << "Number of Cuts Visited which were already explored  " << alreadyVisited << endl;
+        cout<<endl;
+        exit(0);
     #endif
 
     N = 4;
