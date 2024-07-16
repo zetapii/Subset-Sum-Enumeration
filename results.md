@@ -58,3 +58,4 @@ Tests are generated such that:
 
 Observations : 
 - Too many edges. Already visited lattice nodes are encountered very frequently.
+- Candidate sets (number of cuts) is too large compared to the final solution(subset having sum $K$)
