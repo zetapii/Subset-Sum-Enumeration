@@ -29,9 +29,13 @@ int mxQueueSize = 1;
 int alreadyVisited = 0;
 
 void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , int> & visited, int target) {
-    queue<pair<set<int>, set<int>>> q;
+    map< set<int> , int > explored_1;
+    map< set<int> , int > explored_2;
+
+    queue<pair<set<int>, set<int>> > q;
     q.push({parLattice, childLattice});
     visited[childLattice] = 1;
+    totcnt=1;
     while (!q.empty()) {
         auto current = q.front();
         q.pop();
@@ -39,7 +43,6 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
         set<int> curParLattice = current.first;
         set<int> curChildLattice = current.second;
         
-        totcnt++;
         
         if (getsum(curParLattice) == target) finalSet.insert(curParLattice);
         
@@ -52,15 +55,19 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
             set<int> nextParLattice = curChildLattice;
             nextParLattice.erase(itr);
             
-            if (getsum(nextParLattice) > target) {
-                for (auto itrr : nextParLattice) {
+            //Let Y_1 , Y_2 , ..... Y_C be the parents of C
+            if (getsum(nextParLattice) > target) {  //if Y_i is infrequent
+                if(explored_2[nextParLattice] == 1) continue;
+                explored_2[nextParLattice] = 1;
+                for (auto itrr : nextParLattice) {   
                     set<int> temp = nextParLattice;
                     temp.erase(itrr);
                     if (getsum(temp) <= target ) {
-                       if(visited[nextParLattice]==0)
+                       if(visited[nextParLattice]==0) //if one frequent parent exists
                        {
                             visited[nextParLattice]=1;
                             q.push({temp, nextParLattice});
+                            totcnt++;
                             break; 
                        }
                        else 
@@ -69,24 +76,26 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                        }
                     }
                 }
-            } else {
+            } else {    //If Y_i is frequent
                 if (getsum(nextParLattice) == target) finalSet.insert(nextParLattice);
-                
+                if (explored_1[nextParLattice] == 1) continue; //condition to avoid visiting duplicate cuts
+                explored_1[nextParLattice] = 1;
                 for (int itrr = 0; itrr < N; itrr++) {
                     if (nextParLattice.find(itrr) == nextParLattice.end()) {
                         set<int> temp = nextParLattice;
-                        temp.insert(itrr);
-                        if (getsum(temp) > target ) {
+                        temp.insert(itrr);      //for each child C_Y_i of Y_i
+                        if (getsum(temp) > target ) { //if C_Y_i is infrequent
                             if(visited[temp]==0)
                             {
                                 q.push({nextParLattice, temp});
                                 visited[temp]=1;
+                                totcnt++;
                             }
                             else 
                             {
                                 alreadyVisited++;
                             }
-                        } else {
+                        } else {   //if C_Y_is is frequent
                             set<int> temp2 = curChildLattice;
                             temp2.insert(itr);
                             temp2.insert(itrr);
@@ -94,6 +103,7 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                             {
                                 q.push({temp, temp2});
                                 visited[temp2]=1;
+                                totcnt++;
                             }
                             else 
                             {
@@ -171,7 +181,7 @@ void solve(const char* filename = "tests/input.txt")
     }
 }
 
-// #define TEST
+#define TEST
 
 // #define BENCHMARK
 
