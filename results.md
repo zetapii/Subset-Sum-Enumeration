@@ -43,14 +43,14 @@
 
 | Input | Time Taken | Cuts Explored | Subset Sum = K | AlreadyVisitedCut | Maximum Size of Queue at any Instant |
 |-------|-------------|---------------|----------------|-------------------|--------------------------------------|
-| Input 1  | 111.962010 seconds | 40145 | 82 | 5742307 | 18246 |
-| Input 2  | 87.979968 seconds  | 31210 | 72 | 4497078 | 14752 |
-| Input 3  | 31.963368 seconds  | 13672 | 22 | 1543348 | 7121 |
+| Input 1  | 39.146153  seconds | 716949 | 82 | 952391 | 18716 |
+| Input 2  | 31.851369 seconds  | 569031 | 72 | 799314 | 15133 |
+| Input 3  | 13.307522 seconds  | 278526 | 22 | 318115 | 7089 |
 | Input 4  | No RESULT AFTER 1 HOUR | - | - | - | - |
-| Input 5  | 269.133892 seconds | 357348 | 149 | 36158178 | 162965 |
-| Input 6  | 414.413041 seconds | 520446 | 246 | 60071467 | 236625 |
-| Input 7  | 496.281785 seconds | 595185 | 230 | 71036162 | 259711 |
-| Input 8  | 295.874016 seconds | 582279 | 6001 | 43225334 | 228176 |
+| Input 5  | 29.706637 seconds  | 1289980 | 149 | 1048342 | 163178 |
+| Input 6  | 46.903713  seconds | 2248366 | 246 | 1976715 | 236864 |
+| Input 7  | 54.856477 seconds  | 2668630 | 230 | 2332983 | 267779 |
+| Input 8  | 40.604588 seconds  | 863876 | 6001 | 368438 | 228475 |
 
 Tests are generated such that:
 - Input 1, Input 2 and Input 3 each have subsets of size ~20 which equals to K.
