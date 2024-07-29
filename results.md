@@ -41,16 +41,16 @@
 6 8 7 6 14 5 15 17 16 14 18 1 6 19 5 17 11 9 1 12 3 5 12 10 4 5 18 5 9 14 11 5 6 6 3 6 7 6 11 16 10 19 11 5 6 10 2 6 20 19
 
 
-| Input | Time Taken | Cuts Explored | Subset Sum = K | AlreadyVisitedCut | Maximum Size of Queue at any Instant |
-|-------|-------------|---------------|----------------|-------------------|--------------------------------------|
-| Input 1  | 39.146153  seconds | 716949 | 82 | 952391 | 18716 |
-| Input 2  | 31.851369 seconds  | 569031 | 72 | 799314 | 15133 |
-| Input 3  | 13.307522 seconds  | 278526 | 22 | 318115 | 7089 |
-| Input 4  | No RESULT AFTER 1 HOUR | - | - | - | - |
-| Input 5  | 29.706637 seconds  | 1289980 | 149 | 1048342 | 163178 |
-| Input 6  | 46.903713  seconds | 2248366 | 246 | 1976715 | 236864 |
-| Input 7  | 54.856477 seconds  | 2668630 | 230 | 2332983 | 267779 |
-| Input 8  | 40.604588 seconds  | 863876 | 6001 | 368438 | 228475 |
+| Input | N | K | Time Taken | Cuts Explored | Subset Sum = K | AlreadyVisitedCut | Maximum Size of Queue at any Instant |
+|-------|-------|-------|-------------|---------------|----------------|-------------------|--------------------------------------|
+| Input 1 | 25 | 15364 | 39.146153  seconds | 716949 | 82 | 952391 | 18716 |
+| Input 2 | 25 | 16345 | 31.851369 seconds  | 569031 | 72 | 799314 | 15133 |
+| Input 3 | 25 | 17380 | 13.307522 seconds  | 278526 | 22 | 318115 | 7089 |
+| Input 4 | 30 | 16736 | No RESULT AFTER 1 HOUR | - | - | - | - |
+| Input 5 | 30 | 3762  | 29.706637 seconds  | 1289980 | 149 | 1048342 | 163178 |
+| Input 6 | 30 | 4006  | 46.903713  seconds | 2248366 | 246 | 1976715 | 236864 |
+| Input 7 | 30 | 4115  | 54.856477 seconds  | 2668630 | 230 | 2332983 | 267779 |
+| Input 8 | 50 | 20    | 40.604588 seconds  | 863876 | 6001 | 368438 | 228475 |
 
 Tests are generated such that:
 - Input 1, Input 2 and Input 3 each have subsets of size ~20 which equals to K.
