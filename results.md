@@ -1,3 +1,5 @@
+## Input - Varying Array Values and Varying K
+
 #### Input 1 :
 25 15364
 
@@ -56,6 +58,50 @@ Tests are generated such that:
 - Input 1, Input 2 and Input 3 each have subsets of size ~20 which equals to K.
 - Input 5, Input 6 and Input 7 each have subsets of size ~5 which equals to K.
 
+##
 Observations : 
 - Too many edges. Already visited lattice nodes are encountered very frequently.
 - Candidate sets (number of cuts) is too large compared to the final solution(subset having sum $K$)
+
+
+## Input - Fix Array Values and varying K
+
+#### Input 1 :
+
+25 15364
+
+799 650 933 647 807 601 808 617 618 965 819 743 801 670 758 953 807 767 602 999 779 652 902 843 711
+
+#### Input 2 : 
+
+25 13763
+
+799 650 933 647 807 601 808 617 618 965 819 743 801 670 758 953 807 767 602 999 779 652 902 843 711
+
+#### Input 3 : 
+
+25 7445
+
+799 650 933 647 807 601 808 617 618 965 819 743 801 670 758 953 807 767 602 999 779 652 902 843 711
+
+
+#### Input 4 : 
+
+30 3762
+
+839 604 667 728 924 799 668 713 948 869 910 914 914 654 821 634 675 948 663 676 961 969 901 628 911 716 718 975 735 780
+
+#### Input 5 : 
+
+30 5917
+
+839 604 667 728 924 799 668 713 948 869 910 914 914 654 821 634 675 948 663 676 961 969 901 628 911 716 718 975 735 780
+
+
+| Input | N | K | Time Taken | Cuts Explored | Subset Sum = K | AlreadyVisitedCut | Maximum Size of Queue at any Instant |
+|-------|-------|-------|-------------|---------------|----------------|-------------------|--------------------------------------|
+| Input 1 | 25 | 15364 | 39.146153  seconds  | 716949   | 82   | 952391   | 18716   |
+| Input 2 | 25 | 13763 | 357.012728 seconds  | 6807101  | 758  | 8621527  | 164347  | 
+| Input 3 | 25 | 7445  | 1276.192023 seconds | 35367541 | 3680 | 37753680 | 1460988 |
+| Input 4 | 30 | 5917  | 1469.340790 seconds | 45639989 | 4053 | 45639989 | 2775384 | 
+| Input 5 | 30 | 3762  | 29.706637 seconds	 | 1289980  | 149  | 1048342  | 163178  |
