@@ -27,6 +27,11 @@ int getsum(set<int> s)
 int totcnt = 0;
 int mxQueueSize = 1;
 int alreadyVisited = 0;
+// int alreadyVisited1 = 0;
+// int alreadyVisited2 = 0;
+// int alreadyVisited3 = 0;
+
+// #define DEBUG
 
 void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , int> & visited, int target) {
     map< set<int> , int > explored_1;
@@ -35,11 +40,16 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
     queue<pair<set<int>, set<int>> > q;
     q.push({parLattice, childLattice});
     visited[childLattice] = 1;
-    totcnt=1;
+    totcnt=0;
     while (!q.empty()) {
         auto current = q.front();
         q.pop();
         
+        #ifdef DEBUG
+            cout<<"printing bfs cut\n";
+            for(auto it : current.second) cout<<val[it]<<" ";
+            cout<<"\n";
+        #endif
         set<int> curParLattice = current.first;
         set<int> curChildLattice = current.second;
         
@@ -57,7 +67,7 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
             
             //Let Y_1 , Y_2 , ..... Y_C be the parents of C
             if (getsum(nextParLattice) > target) {  //if Y_i is infrequent
-                if(explored_2[nextParLattice] == 1) continue;
+                if(explored_2[nextParLattice] == 1 or visited[nextParLattice] == 1) continue;
                 explored_2[nextParLattice] = 1;
                 for (auto itrr : nextParLattice) {   
                     set<int> temp = nextParLattice;
@@ -67,16 +77,17 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                        {
                             visited[nextParLattice]=1;
                             q.push({temp, nextParLattice});
-                            totcnt++;
                             break; 
                        }
                        else 
                        {
                             alreadyVisited++;
+                            // alreadyVisited1++;
                        }
                     }
                 }
             } else {    //If Y_i is frequent
+                totcnt++;           //Unqiuely identified cut
                 if (getsum(nextParLattice) == target) finalSet.insert(nextParLattice);
                 if (explored_1[nextParLattice] == 1) continue; //condition to avoid visiting duplicate cuts
                 explored_1[nextParLattice] = 1;
@@ -89,11 +100,11 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                             {
                                 q.push({nextParLattice, temp});
                                 visited[temp]=1;
-                                totcnt++;
                             }
                             else 
                             {
                                 alreadyVisited++;
+                                // alreadyVisited2++;
                             }
                         } else {   //if C_Y_is is frequent
                             set<int> temp2 = curChildLattice;
@@ -103,11 +114,11 @@ void bfsExpandCut(set<int> parLattice, set<int> childLattice, map< set<int> , in
                             {
                                 q.push({temp, temp2});
                                 visited[temp2]=1;
-                                totcnt++;
                             }
                             else 
                             {
                                 alreadyVisited++;
+                                // alreadyVisited3++;
                             }
                         }
                     }
@@ -181,9 +192,9 @@ void solve(const char* filename = "tests/input.txt")
     }
 }
 
-#define TEST
+// #define TEST
 
-// #define BENCHMARK
+#define BENCHMARK
 
 int main()
 {
@@ -203,7 +214,8 @@ int main()
         cout << "Total Number of cuts : " << totcnt << endl;
         cout << "Maximum Size of Queue at any instant " << mxQueueSize << endl;
         cout << "Number of Cuts Visited which were already explored  " << alreadyVisited << endl;
-        cout<<endl;
+        // cout << "Number of Cuts Visited which were already explored  " << alreadyVisited1 << " "<<alreadyVisited2<<" "<<alreadyVisited3<<endl;
+        cout << endl;
         exit(0);
     #endif
 
@@ -224,5 +236,6 @@ int main()
         cout<<"\n";
     }
     cout<<"total number of cuts : " <<totcnt<<"\n";
+    // cout << "Number of Cuts Visited which were already explored  " << alreadyVisited1 << " "<<alreadyVisited2<<" "<<alreadyVisited3<<endl;
     return 0;
 }
