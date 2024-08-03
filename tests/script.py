@@ -40,8 +40,8 @@ def compare_output(output_file, expected_output_file):
             print(output_content)
             return False
 
-def main():
-    source_file = "main.cpp"
+def main(source_file = "main.cpp"):
+    
     executable_file = "a.out"
     input_file = "tests/input.txt"
     output_file = "program_output.txt"
@@ -56,4 +56,5 @@ def main():
     compare_output(output_file, expected_output_file)
 
 if __name__ == "__main__":
-    main()
+    filename = input("Enter the filename to test: ")
+    main(filename)
