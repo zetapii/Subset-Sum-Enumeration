@@ -33,6 +33,8 @@ Following our discussion in the meeting on July 31st, we implemented a basic rec
    Since generating a subset itself is the major cost here, we can focus on modifying MARGIN to use the recursion tree. 
    
    Tree for N = 4 : 
+   ![alt text](../../images/Recursion%20Tree.jpeg)
+
 
 7. **MARGIN STEPS** : 
 
