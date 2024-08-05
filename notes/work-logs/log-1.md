@@ -28,4 +28,25 @@ Following our discussion in the meeting on July 31st, we implemented a basic rec
      a) The time required to generate and process all these subsets becomes impractical.
      b) Memory usage can also become an issue.
 
+6. **Recursive Tree** : 
+   
+   Since generating a subset itself is the major cost here, we can focus on modifying MARGIN to use the recursion tree. 
+   
+   Tree for N = 4 : 
+
+7. **MARGIN STEPS** : 
+
+   (a) Cut is P--C
+
+   (b) Visit all cuts whose children is C
+
+   (c) Expand Up
+  
+   (d) Expand Down
+
+   Where is the work done by the algorithm : 
+
+      a) Multiple cuts being visited
+
+      b) In trying to explore adjacent cuts but it turns out to be already visited (last two steps)
 
